@@ -2,18 +2,22 @@
 # PRÉREQUIS#
 # ----------------------#
 from tkinter import *
+import tkinter.font as tkFont
 bitcoin = 0
 ncpu = 1
 nram = 1
 window = Tk()
 window.title("Bitcoin Clicker")
-window.geometry('300x200')
+window.geometry('720x480')
+window.resizable(False, False)
+window.configure(bg="#bbbbbb")
 b = StringVar()
 c = StringVar()
 r = StringVar()
 b.set(bitcoin)
 c.set(ncpu)
 r.set(nram)
+fnum = tkFont.Font(size=72)
 #----------------------#
 
 #DÉFINITIONS#
@@ -45,22 +49,24 @@ def ram():
 bitl = Label(window, textvariable=b)
 
 imgBitcoin = PhotoImage(file='bitcoin.png')
-button = Button(window, image=imgBitcoin, command=click)
+buttonbtc = Button(window, image=imgBitcoin, command=click)
 
 imgCPU = PhotoImage(file='cpu.png')
-button2 = Button(window, image=imgCPU, command=cpu)
+buttoncpu = Button(window, image=imgCPU, command=cpu)
 
 imgRAM = PhotoImage(file='ram.png', width=200, height=200)
-button3 = Button(window, image=imgRAM, command=ram)
+buttonram = Button(window, image=imgRAM, command=ram, bd=0, bg="#bbbbbb")
 
-cpul = Label(window,textvariable=c)
-raml = Label(window, textvariable=r)
+cpul = Label(window,textvariable=c, bg="#bbbbbb", fg="#333333")
+raml = Label(window, textvariable=r, bg="#bbbbbb", fg="#333333", highlightcolor="red")
 
+btctext = Label(window, text="Bitcoin", bg="#bbbbbb", fg="#333333", font="fnum")
 
-button.grid(column=1, row=1)
-bitl.grid(column=0, row=1)
-button2.grid(column=1, row=2)
-cpul.grid(column=0, row=2)
-button3.grid(column=1, row=3)
-raml.grid(column=0, row=3)
+btctext.place(x=85,y=110)
+buttonbtc.place(x=10,y=140)
+bitl.place(x=85,y=360)
+buttoncpu.pack(side="right")
+cpul.pack(side="right")
+buttonram.pack(side="right")
+raml.pack(side="right")
 window.mainloop()
