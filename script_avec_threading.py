@@ -66,19 +66,20 @@ def cpu(): # Non fonctionnel, nécessite du threading
     global ncpu
     global pcpu
     if bitcoin >= pcpu:
-        ncpu += 1
-        c.set(ncpu)
-        bitcoin -= pcpu
-        bitcoin = int(bitcoin)
-        b.set(bitcoin)
-        pcpu += 0.2*pcpu
-        pcpu = int(pcpu)
-        pc.set(pcpu)
-        cpudelay = 1-pcpu/100
-        if cpu_thread.running:
-            END
-        else:
-            cpu_thread.start_cpu()
+        if pcpu <= 99:
+            ncpu += 1
+            c.set(ncpu)
+            bitcoin -= pcpu
+            bitcoin = int(bitcoin)
+            b.set(bitcoin)
+            pcpu += 0.2*pcpu
+            pcpu = int(pcpu)
+            pc.set(pcpu)
+            cpudelay = 1-pcpu/100
+            if cpu_thread.running:
+                END
+            else:
+                cpu_thread.start_cpu()
 
 class UseCpu(threading.Thread): # Portion de code sur le threading empruntée et modifiée à : https://nitratine.net/blog/post/python-auto-clicker/
     def __init__(self, delay):
@@ -94,7 +95,7 @@ class UseCpu(threading.Thread): # Portion de code sur le threading empruntée et
         global bitcoin
         while self.program_running:
             while self.running:
-                bitcoin += 1
+                bitcoin += bitcoin+1
                 b.set(bitcoin)
                 time.sleep(self.delay)
             time.sleep(0.1)
@@ -104,6 +105,15 @@ class UseCpu(threading.Thread): # Portion de code sur le threading empruntée et
 
 cpu_thread = UseCpu(cpudelay)
 cpu_thread.start()
+
+def on_press(key):
+    if key == emergency_key:
+        if cpu_thread.running:
+            cpu_thread.emergency_exit()
+
+
+with Listener(on_press=on_press) as listener:
+    listener.join()
 
 #----------------------#
 
