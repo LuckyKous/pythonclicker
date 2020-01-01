@@ -28,11 +28,12 @@ r.set(nram)
 pr.set(pram)
 pc.set(pcpu)
 fnum = tkFont.Font(size=72)
-emergency_key = KeyCode(char='s')
-ram_key = KeyCode(char='r')
-cpu_key = KeyCode(char='c')
-btc_key = KeyCode(char='b')
 cpudelay = StringVar()
+#emergency_key = KeyCode(char='s')
+#ram_key = KeyCode(char='r')
+#cpu_key = KeyCode(char='c')
+#btc_key = KeyCode(char='b')
+#cpudelay = StringVar()
 #----------------------#
 
 #DÉFINITIONS#
