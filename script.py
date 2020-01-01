@@ -61,10 +61,12 @@ cpul = Label(window,textvariable=c, bg="#bbbbbb", fg="#333333")
 raml = Label(window, textvariable=r, bg="#bbbbbb", fg="#333333", highlightcolor="red")
 
 btctext = Label(window, text="Bitcoin", bg="#bbbbbb", fg="#333333", font="fnum")
+cputext = Label(window, text="CPU", bg="#bbbbbb", fg="#333333", font="fnum")
 
 btctext.place(x=85,y=110)
 buttonbtc.place(x=10,y=140)
 bitl.place(x=85,y=360)
+cputext.place(x=400,y=110)
 buttoncpu.pack(side="right")
 cpul.pack(side="right")
 buttonram.pack(side="right")
