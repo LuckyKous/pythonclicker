@@ -7,7 +7,6 @@ from math import *
 import time
 import random
 import threading
-from pynput.keyboard import Listener, KeyCode
 bitcoin = 0 # Nb original de BTC
 ncpu = 1 # Nb original de CPU
 nram = 1 # Nb original de RAM
