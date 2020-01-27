@@ -1,14 +1,17 @@
 # coding:utf-8
 # PRÉREQUIS#
 # ----------------------#
+
+
 from tkinter import * # Import de tkinter pour l'interface utilisateur
 import tkinter.font as tkFont # Import des polices d'écriture de tkinter
 from math import * # Import du module math
 import time # Import du module time
-import random # Import du module random
+#import random # Import du module random
 import threading # Import du threading
 from threading import Thread
 import sys
+import json
 bitcoin = 0 # Nb original de BTC
 ncpu = 1 # Nb original de CPU
 nram = 1 # Nb original de RAM
@@ -22,6 +25,7 @@ window.configure(bg="#bbbbbb") # Définit la couleur de fond de la fenêtre
 b = StringVar() # Variable nb BTC
 c = StringVar() # Variable nb CPU
 r = StringVar() # Variable nb RAM
+#rand = StringVar() # Variable aléatoire
 pr = StringVar() # Variable du prix de la RAM
 pc = StringVar() # Variable du prix de la RAM
 b.set(bitcoin) # Définit la valeur de bitcoin
@@ -41,6 +45,11 @@ cpudelay = StringVar() # Définit la valeur du délai du CPU
 #DÉFINITIONS#
 #----------------------#
 
+def main():
+    f=open("guru99.txt", "r")
+    f1 = f.readlines()
+        contents =f.read()
+
 
 def click(): # Définition de la fonction click
     global bitcoin # Appelle la variable bitcoin
@@ -49,19 +58,21 @@ def click(): # Définition de la fonction click
     bitcoin = int(bitcoin) # Arrondi bitcoin à l'entier
     b.set(bitcoin) # Met à jour la variable bitcoin
 
-def ram(): # Définition de la fonction ram
-    global bitcoin # Appelle la variable bitcoin
-    global nram # Appelle la variable nram
-    global pram # Appelle la variable pram
-    if bitcoin >= pram: # On vérifie si il y a assez de bitcoin pour acheter une ram
-        nram += 1 # On ajoute une ram
-        r.set(nram) # Mise à jour de la ram
-        bitcoin -= pram # Retrait du prix de la ram aux bitcoin
-        bitcoin = int(bitcoin) # Arrondi bitcoin à l'entier
-        b.set(bitcoin) # Met à jour bitcoin
-        pram += 0.2*pram # Augmente le prix de la ram 'pram' par 0.2 + pram (1.2)
-        pram = int(pram) # Arrondi de pram à l'entier
-        pr.set(pram) # Mise à jour de pram
+
+def ram():  # Définition de la fonction ram
+    global bitcoin  # Appelle la variable bitcoin
+    global nram  # Appelle la variable nram
+    global pram  # Appelle la variable pram
+    if bitcoin >= pram:  # On vérifie si il y a assez de bitcoin pour acheter une ram
+        nram += 1  # On ajoute une ram
+        r.set(nram)  # Mise à jour de la ram
+        bitcoin -= pram  # Retrait du prix de la ram aux bitcoin
+        bitcoin = int(bitcoin)  # Arrondi bitcoin à l'entier
+        b.set(bitcoin)  # Met à jour bitcoin
+        pram += 0.2*pram  # Augmente le prix de la ram 'pram' par 0.2 + pram (1.2)
+        pram = int(pram)  # Arrondi de pram à l'entier
+        pr.set(pram)  # Mise à jour de pram
+
 
 def cpu(): # Non fonctionnel, nécessite du threading
     global bitcoin
@@ -80,6 +91,21 @@ def cpu(): # Non fonctionnel, nécessite du threading
         cpudelay = 1-pcpu/100
 
 
+def save():
+    global bitcoin
+    global ncpu
+    global pcpu
+    global cpudelay
+    global pcpu
+    global pram
+    global fnum
+    f= open("save.txt","w+")
+    for i in range(10):
+        print(i)
+        f.write("This is line %d\r\n" % (i+1))
+    f.close()
+
+
 class Cpu(Thread):
     def __init__(self):
         Thread.__init__(self)
@@ -89,7 +115,7 @@ class Cpu(Thread):
         global ncpu
         while 1:
             time.sleep(1)
-            bitcoin += 1*ncpu
+            bitcoin += 1000000*ncpu
             b.set(bitcoin)
 
 
@@ -99,6 +125,9 @@ threadcpu = Cpu()
 #----------------------#
 
 
+#background_image = PhotoImage(file="fond.png")
+#background_label = Label(window, image=background_image)
+#background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 imgBitcoin = PhotoImage(file='bitcoin.png')
 buttonbtc = Button(window, image=imgBitcoin, command=click, bd=0, bg="#bbbbbb") # Bouton bitcoin qui appelle la fonction click
@@ -122,6 +151,8 @@ pcpult = Label(window, text="Prix : ", bg="#bbbbbb", fg="#333333", font="fnum")
 pramlv = Label(window, textvariable=pr, bg="#bbbbbb", fg="#333333", font="fnum")
 pcpulv = Label(window, textvariable=pc, bg="#bbbbbb", fg="#333333", font="fnum")
 
+savebutton = Button(window, text='cc', command=save, bd=0, bg="#bbbbbb")
+
 btctext.place(x=85,y=90)
 buttonbtc.place(x=10,y=140)
 bitl.place(x=85,y=110)
@@ -137,6 +168,8 @@ buttonram.pack(side="right")
 raml.place(x=398,y=110)
 pramlt.place(x=350,y=350)
 pramlv.place(x=390,y=350)
+
+savebutton.place(x=0,y=0)
 
 threadcpu.start()
 
