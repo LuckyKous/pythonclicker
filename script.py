@@ -34,6 +34,7 @@ r.set(nram) # Définit la valeur de RAM
 pr.set(pram) # Définit la valeur du prix de RAM
 pc.set(pcpu) # Définit la valeur du prix de CPU
 fnum = tkFont.Font(size=72) # Définit la valeur par défaut de la police d'écriture fnum
+sauvefont = tkFont.Font(size=144) # Définit la valeur par défaut de la police d'écriture fnum
 cpudelay = StringVar() # Définit la valeur du délai du CPU
 #emergency_key = KeyCode(char='s')
 #ram_key = KeyCode(char='r')
@@ -45,10 +46,32 @@ cpudelay = StringVar() # Définit la valeur du délai du CPU
 #DÉFINITIONS#
 #----------------------#
 
-def main():
-    f=open("guru99.txt", "r")
-    f1 = f.readlines()
-        contents =f.read()
+#def main():
+#    f=open("guru99.txt", "r")
+#    f1 = f.readlines()
+#        contents =f.read()
+
+
+def load():
+    global bitcoin
+    global ncpu
+    global pcpu
+    global cpudelay
+    global nram
+    global pram
+    global fnum
+    with open('sauve.json', 'r') as f:
+        sauve_json = json.load(f)
+    bitcoin = sauve_json["bitcoin"]
+    b.set(bitcoin)
+    ncpu = sauve_json["ncpu"]
+    c.set(ncpu)
+    nram = sauve_json["nram"]
+    r.set(nram)
+    pcpu = sauve_json["pcpu"]
+    pc.set(pcpu)
+    pram = sauve_json["pram"]
+    pr.set(pram)
 
 
 def click(): # Définition de la fonction click
@@ -96,14 +119,12 @@ def save():
     global ncpu
     global pcpu
     global cpudelay
-    global pcpu
+    global nram
     global pram
     global fnum
-    f= open("save.txt","w+")
-    for i in range(10):
-        print(i)
-        f.write("This is line %d\r\n" % (i+1))
-    f.close()
+    sauve = {"bitcoin": bitcoin, "ncpu": ncpu, "nram": nram, "pcpu": pcpu, "pram": pram} # Sauvegarde des variables dans un vichier json
+    with open("sauve.json", "w") as write_file: # Sauvegarde des variables dans un vichier json
+        json.dump(sauve, write_file, indent=4) # Sauvegarde des variables dans un vichier json
 
 
 class Cpu(Thread):
@@ -115,7 +136,7 @@ class Cpu(Thread):
         global ncpu
         while 1:
             time.sleep(1)
-            bitcoin += 1000000*ncpu
+            bitcoin += 1*ncpu
             b.set(bitcoin)
 
 
@@ -151,7 +172,10 @@ pcpult = Label(window, text="Prix : ", bg="#bbbbbb", fg="#333333", font="fnum")
 pramlv = Label(window, textvariable=pr, bg="#bbbbbb", fg="#333333", font="fnum")
 pcpulv = Label(window, textvariable=pc, bg="#bbbbbb", fg="#333333", font="fnum")
 
-savebutton = Button(window, text='cc', command=save, bd=0, bg="#bbbbbb")
+titlelabel = Label(window, text="Bitcoin Clicker", bg="#bbbbbb", fg="#333333", font="sauvefont")
+
+savebutton = Button(window, text='Sauvegarder', command=save, bd=0, bg="#bbbbbb", font="sauvefont")
+loadbutton = Button(window, text='Charger une sauvegarde', command=load, bd=0, bg="#bbbbbb", font="sauvefont")
 
 btctext.place(x=85,y=90)
 buttonbtc.place(x=10,y=140)
@@ -169,7 +193,10 @@ raml.place(x=398,y=110)
 pramlt.place(x=350,y=350)
 pramlv.place(x=390,y=350)
 
-savebutton.place(x=0,y=0)
+titlelabel.place(x=315,y=30)
+
+savebutton.place(x=320,y=380)
+loadbutton.place(x=280,y=420)
 
 threadcpu.start()
 
