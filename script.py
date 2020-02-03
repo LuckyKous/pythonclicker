@@ -10,7 +10,7 @@ import time # Import du module time
 #import random # Import du module random
 import threading # Import du threading
 from threading import Thread
-import sys
+#import sys
 #import os
 import json
 import simpleaudio as sa
