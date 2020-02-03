@@ -1,7 +1,7 @@
 {
-    "bitcoin": 85,
-    "ncpu": 5,
-    "nram": 6,
-    "pcpu": 414,
-    "pram": 247
+    "bitcoin": 93,
+    "ncpu": 4,
+    "nram": 3,
+    "pcpu": 345,
+    "pram": 144
 }

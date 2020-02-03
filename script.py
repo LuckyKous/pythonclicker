@@ -11,12 +11,18 @@ import time # Import du module time
 import threading # Import du threading
 from threading import Thread
 import sys
+#import os
 import json
+import simpleaudio as sa
+#from pydub import AudioSegment
+#from pydub.playback import play
 bitcoin = 0 # Nb original de BTC
 ncpu = 1 # Nb original de CPU
 nram = 1 # Nb original de RAM
 pram = 100 # Prix original de RAM
 pcpu = 200 # Prix original de CPU
+musicvar = "base"
+playing = "true"
 window = Tk() # Définition de l'interface
 window.title("Bitcoin Clicker") # Titre de la fenêtre
 window.geometry('720x480') # Taille de la fenêtre
@@ -37,6 +43,11 @@ fnum = tkFont.Font(size=72) # Définit la valeur par défaut de la police d'écr
 sauvefont = tkFont.Font(size=144) # Définit la valeur par défaut de la police d'écriture fnum
 cpudelay = StringVar() # Définit la valeur du délai du CPU
 e = Entry(window)
+cheatvar = StringVar()
+#musique = AudioSegment.from_file("music.wav", format="wav")
+#play(musique)
+
+playing = "true"
 #emergency_key = KeyCode(char='s')
 #ram_key = KeyCode(char='r')
 #cpu_key = KeyCode(char='c')
@@ -52,19 +63,22 @@ e = Entry(window)
 #    f1 = f.readlines()
 #        contents =f.read()
 
-
 def cheatcode():
     global bitcoin
     global ncpu
-    global pcpuy
+    global pcpu
     global cpudelay
     global nram
     global pram
     global fnum
-    if cheatvar == "free" :
+    cheatvar = e.get()
+    if cheatvar == "argent" :
         bitcoin += 1000
         b.set(bitcoin)
-        print("true")
+    elif cheatvar == "thomas" :
+        musicvar == "thomas"
+    elif cheatvar == "musique" :
+        musicvar == "base"
     print(e.get())
 
 
@@ -156,8 +170,38 @@ class Cpu(Thread):
             b.set(bitcoin)
 
 
+class Music(Thread):
+    def __init__(self):
+        Thread.__init__(self)
+
+    def run(self):
+        while playing == "true":
+            if musicvar == "thomas":
+                wave_base_obj = sa.WaveObject.from_wave_file("thomas.wav")
+                play_base_obj = wave_base_obj.play()
+                play_base_obj.wait_done()
+                playing == "false"
+            elif musicvar == "base":
+                wave_base_obj = sa.WaveObject.from_wave_file("music.wav")
+                play_base_obj = wave_base_obj.play()
+                play_base_obj.wait_done()
+                playing == "false"
+
+    def stop(self):
+        if musicvar == "base":
+            wave_base_obj = sa.WaveObject.from_wave_file("music.wav")
+            play_base_obj = wave_base_obj.play()
+            play_base_obj.stop()
+            playing == "false"
+        elif musicvar == "thomas":
+            wave_base_obj = sa.WaveObject.from_wave_file("thomas.wav")
+            play_base_obj = wave_base_obj.play()
+            play_base_obj.stop()
+            playing == "false"
+
 # Création des threads
 threadcpu = Cpu()
+threadmusic = Music()
 
 #----------------------#
 
@@ -169,6 +213,10 @@ threadcpu = Cpu()
 cc = Button(window, text="Utiliser un code", width=16, command=cheatcode)
 #cc.place(x=450,y=27)
 cc.place(x=577,y=32)
+
+stopsoundbutton = Button(window, text="Stopper les sons", width=16, command=threadmusic.stop)
+
+#stopsoundbutton.place(x=577,y=50)
 
 imgBitcoin = PhotoImage(file='bitcoin.png')
 buttonbtc = Button(window, image=imgBitcoin, command=click, bd=0, bg="#bbbbbb") # Bouton bitcoin qui appelle la fonction click
@@ -224,5 +272,6 @@ e.place(x=575,y=10)
 cheatvar = e.get()
 
 threadcpu.start()
+threadmusic.start()
 
 window.mainloop()
