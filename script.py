@@ -1,5 +1,6 @@
 # coding:utf-8
-# PRÉREQUIS#
+# PRÉREQUIS# :
+# - simpleaudio : éxecuter 'pip install simpleaudio' dans un invite de commande windows
 # ----------------------#
 
 
@@ -9,11 +10,11 @@ from math import * # Import du module math
 import time # Import du module time
 #import random # Import du module random
 import threading # Import du threading
-from threading import Thread
+from threading import Thread # Raccourci
 #import sys
 #import os
-import json
-import simpleaudio as sa
+import json # Import du JSON
+import simpleaudio as sa # Import pour les musiques (avec raccourci)
 #from pydub import AudioSegment
 #from pydub.playback import play
 bitcoin = 0 # Nb original de BTC
@@ -21,9 +22,9 @@ ncpu = 1 # Nb original de CPU
 nram = 1 # Nb original de RAM
 pram = 100 # Prix original de RAM
 pcpu = 200 # Prix original de CPU
-musicvar = "base"
-playing = "true"
-window = Tk() # Définition de l'interface
+musicvar = "base" # Définition de la musique par défaut
+playing = "true" # Définition si la musique joue ou pas par défaut
+window = Tk() # Définition de l'interface et du début de la boucle générale
 window.title("Bitcoin Clicker") # Titre de la fenêtre
 window.geometry('720x480') # Taille de la fenêtre
 window.resizable(False, False) # Empêche l'utilisateur de redimensionner la fenêtre
@@ -42,12 +43,12 @@ pc.set(pcpu) # Définit la valeur du prix de CPU
 fnum = tkFont.Font(size=72) # Définit la valeur par défaut de la police d'écriture fnum
 sauvefont = tkFont.Font(size=144) # Définit la valeur par défaut de la police d'écriture fnum
 cpudelay = StringVar() # Définit la valeur du délai du CPU
-e = Entry(window)
-cheatvar = StringVar()
+e = Entry(window) # Barre pour entrer des codes de triche
+cheatvar = StringVar() # Variable texte des codes de triche
 #musique = AudioSegment.from_file("music.wav", format="wav")
 #play(musique)
 
-playing = "true"
+playing = "true" # Définit le son comme en train de jouer
 #emergency_key = KeyCode(char='s')
 #ram_key = KeyCode(char='r')
 #cpu_key = KeyCode(char='c')
@@ -63,7 +64,7 @@ playing = "true"
 #    f1 = f.readlines()
 #        contents =f.read()
 
-def cheatcode():
+def cheatcode(): # Fonction pour les cheat codes
     global bitcoin
     global ncpu
     global pcpu
@@ -71,18 +72,18 @@ def cheatcode():
     global nram
     global pram
     global fnum
-    cheatvar = e.get()
-    if cheatvar == "argent" :
-        bitcoin += 1000
-        b.set(bitcoin)
-    elif cheatvar == "thomas" :
+    cheatvar = e.get() # Récupération de la barre de cheat code et stockage dans la variable
+    if cheatvar == "argent" : # On vérifie si l'utilisateur a entré un code valide
+        bitcoin += 1000 # Don de 1000 bitcoin car ce code est valide
+        b.set(bitcoin) # MAJ affichage des bitcoin
+    elif cheatvar == "thomas" : # En travail
         musicvar == "thomas"
-    elif cheatvar == "musique" :
+    elif cheatvar == "musique" : # En travail
         musicvar == "base"
-    print(e.get())
+    print(e.get()) # Retour console du code entré
 
 
-def load():
+def load(): # Fonction de chargement de la sauvegarde
     global bitcoin
     global ncpu
     global pcpu
@@ -90,9 +91,9 @@ def load():
     global nram
     global pram
     global fnum
-    with open('sauve.json', 'r') as f:
-        sauve_json = json.load(f)
-    bitcoin = sauve_json["bitcoin"]
+    with open('sauve.json', 'r') as f: # Ouverture du fichier en read
+        sauve_json = json.load(f) # Permet le lien avec la suite
+    bitcoin = sauve_json["bitcoin"] # On récupère les valeurs depuis le document de sauvegarde pour chaque valeur
     b.set(bitcoin)
     ncpu = sauve_json["ncpu"]
     c.set(ncpu)
@@ -132,7 +133,7 @@ def cpu(): # Non fonctionnel, nécessite du threading
     global ncpu
     global pcpu
     global cpudelay
-    if bitcoin >= pcpu:
+    if bitcoin >= pcpu: # Pareil que la fonction RAM
         ncpu += 1
         c.set(ncpu)
         bitcoin -= pcpu
@@ -141,10 +142,10 @@ def cpu(): # Non fonctionnel, nécessite du threading
         pcpu += 0.2*pcpu
         pcpu = int(pcpu)
         pc.set(pcpu)
-        cpudelay = 1-pcpu/100
+        cpudelay = 1-pcpu/100 # En travail
 
 
-def save():
+def save(): # Fonction pour sauvegarder
     global bitcoin
     global ncpu
     global pcpu
@@ -152,58 +153,60 @@ def save():
     global nram
     global pram
     global fnum
-    sauve = {"bitcoin": bitcoin, "ncpu": ncpu, "nram": nram, "pcpu": pcpu, "pram": pram} # Sauvegarde des variables dans un vichier json
+    sauve = {"bitcoin": bitcoin, "ncpu": ncpu, "nram": nram, "pcpu": pcpu, "pram": pram} # Sauvegarde des variables
     with open("sauve.json", "w") as write_file: # Sauvegarde des variables dans un vichier json
-        json.dump(sauve, write_file, indent=4) # Sauvegarde des variables dans un vichier json
+        json.dump(sauve, write_file, indent=4) # Ajoute l'indentation pour mieux se repérer dans le fichier
 
 
-class Cpu(Thread):
-    def __init__(self):
-        Thread.__init__(self)
+class Cpu(Thread): # Définition du Thread CPU
+    def __init__(self): # Fonction d'initialisation du Thread CPU
+        Thread.__init__(self) # Initialisation du Thread CPU
 
-    def run(self):
+    def run(self): # Fonction du thread en marche
         global bitcoin
         global ncpu
         while 1:
-            time.sleep(1)
+            time.sleep(1) # Ajoute 1 bicoin chaque seconde
             bitcoin += 1*ncpu
             b.set(bitcoin)
 
 
-class Music(Thread):
+class Music(Thread): # Définition du thread MUSIC
     def __init__(self):
         Thread.__init__(self)
 
-    def run(self):
-        while playing == "true":
-            if musicvar == "thomas":
+    def run(self): # Fonction du thread en marche
+        while playing == "true": # On vérifie si la musique est activée et on joue en boucle
+            if musicvar == "thomas": # En travail (2ème musique)
                 wave_base_obj = sa.WaveObject.from_wave_file("thomas.wav")
                 play_base_obj = wave_base_obj.play()
                 play_base_obj.wait_done()
-                playing == "false"
-            elif musicvar == "base":
-                wave_base_obj = sa.WaveObject.from_wave_file("music.wav")
-                play_base_obj = wave_base_obj.play()
-                play_base_obj.wait_done()
-                playing == "false"
+                #playing == "false"
+            elif musicvar == "base": # On vérifie si la musique demandée correspond à celle-là
+                wave_base_obj = sa.WaveObject.from_wave_file("music.wav") # Récupération du fichier WAV
+                play_base_obj = wave_base_obj.play() # On joue le son récupéré avant
+                play_base_obj.wait_done() # On attend la fin de la musique
+                #playing == "false" # En travail
 
-    def stop(self):
-        if musicvar == "base":
+    def stop(self): # Fonction du thread pour arrêter la musique
+        if musicvar == "base": # On cherche à savoir quelle musique joue afin de l'arrêter
             wave_base_obj = sa.WaveObject.from_wave_file("music.wav")
             play_base_obj = wave_base_obj.play()
-            play_base_obj.stop()
-            playing == "false"
-        elif musicvar == "thomas":
+            play_base_obj.stop() # Arrêt de la musique en cours
+            #playing == "false" # En travail
+        elif musicvar == "thomas": # En travail (2nde musique)
             wave_base_obj = sa.WaveObject.from_wave_file("thomas.wav")
             play_base_obj = wave_base_obj.play()
             play_base_obj.stop()
-            playing == "false"
+            #playing == "false"
 
 # Création des threads
 threadcpu = Cpu()
 threadmusic = Music()
 
 #----------------------#
+
+# Définition et placement de tous les boutons
 
 
 #background_image = PhotoImage(file="fond.png")
@@ -266,12 +269,18 @@ titlelabel.place(x=315,y=30)
 savebutton.place(x=320,y=380)
 loadbutton.place(x=280,y=420)
 
+# Placement de la barre pour entrer les codes
+
 e = Entry(window, width=20)
 e.place(x=575,y=10)
 
+# Stockage du code entré dans une variable
+
 cheatvar = e.get()
+
+# Démarrage des Threads
 
 threadcpu.start()
 threadmusic.start()
 
-window.mainloop()
+window.mainloop() # On retourne au début de la boucle générale
