@@ -36,6 +36,7 @@ pc.set(pcpu) # Définit la valeur du prix de CPU
 fnum = tkFont.Font(size=72) # Définit la valeur par défaut de la police d'écriture fnum
 sauvefont = tkFont.Font(size=144) # Définit la valeur par défaut de la police d'écriture fnum
 cpudelay = StringVar() # Définit la valeur du délai du CPU
+e = Entry(window)
 #emergency_key = KeyCode(char='s')
 #ram_key = KeyCode(char='r')
 #cpu_key = KeyCode(char='c')
@@ -50,6 +51,21 @@ cpudelay = StringVar() # Définit la valeur du délai du CPU
 #    f=open("guru99.txt", "r")
 #    f1 = f.readlines()
 #        contents =f.read()
+
+
+def cheatcode():
+    global bitcoin
+    global ncpu
+    global pcpuy
+    global cpudelay
+    global nram
+    global pram
+    global fnum
+    if cheatvar == "free" :
+        bitcoin += 1000
+        b.set(bitcoin)
+        print("true")
+    print(e.get())
 
 
 def load():
@@ -150,6 +166,10 @@ threadcpu = Cpu()
 #background_label = Label(window, image=background_image)
 #background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+cc = Button(window, text="Utiliser un code", width=16, command=cheatcode)
+#cc.place(x=450,y=27)
+cc.place(x=577,y=32)
+
 imgBitcoin = PhotoImage(file='bitcoin.png')
 buttonbtc = Button(window, image=imgBitcoin, command=click, bd=0, bg="#bbbbbb") # Bouton bitcoin qui appelle la fonction click
 
@@ -197,6 +217,11 @@ titlelabel.place(x=315,y=30)
 
 savebutton.place(x=320,y=380)
 loadbutton.place(x=280,y=420)
+
+e = Entry(window, width=20)
+e.place(x=575,y=10)
+
+cheatvar = e.get()
 
 threadcpu.start()
 
