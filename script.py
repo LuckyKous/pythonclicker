@@ -250,17 +250,17 @@ loadbutton = Button(window, text='Charger une sauvegarde', command=load, bd=0, b
 
 btctext.place(x=85,y=90)
 buttonbtc.place(x=10,y=140)
-bitl.place(x=85,y=110)
+bitl.place(x=85,y=115)
 
 cputext.place(x=598,y=90)
 buttoncpu.pack(side="right")
-cpul.place(x=598,y=110)
+cpul.place(x=598,y=115)
 pcpult.place(x=550,y=350)
 pcpulv.place(x=590,y=350)
 
 ramtext.place(x=398,y=90)
 buttonram.pack(side="right")
-raml.place(x=398,y=110)
+raml.place(x=398,y=115)
 pramlt.place(x=350,y=350)
 pramlv.place(x=390,y=350)
 
